@@ -1,0 +1,468 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Release gate for known queue regressions. Changing implementation, tests, registry, packaging, installation, dependencies or documentation invalidates previous verification.",
+  "requiredRuntimes": [
+    "node",
+    "electron"
+  ],
+  "testsKnown": [
+    {
+      "file": "tests/client-scheduler.test.cjs",
+      "name": "a load requested after a write cannot coalesce with a preceding stale read"
+    },
+    {
+      "file": "tests/client-scheduler.test.cjs",
+      "name": "a lost CAS reply is explicitly ambiguous and neither storage mutation nor updater is repeated"
+    },
+    {
+      "file": "tests/client-scheduler.test.cjs",
+      "name": "a second protocol hint arriving during a read triggers a fresh read after that snapshot"
+    },
+    {
+      "file": "tests/client-scheduler.test.cjs",
+      "name": "a slow background read produces no polling backlog ahead of a user write"
+    },
+    {
+      "file": "tests/client-scheduler.test.cjs",
+      "name": "canonical server queue replaces stale input, and protocol metadata is sent only in CAS parameters"
+    },
+    {
+      "file": "tests/client-scheduler.test.cjs",
+      "name": "control: original interval scheduler accumulates reads ahead of a user write"
+    },
+    {
+      "file": "tests/client-scheduler.test.cjs",
+      "name": "disposing a listener during notification suppresses its queued callback"
+    },
+    {
+      "file": "tests/client-scheduler.test.cjs",
+      "name": "many synchronous hints coalesce and disposal prevents a scheduled hint refresh"
+    },
+    {
+      "file": "tests/client-scheduler.test.cjs",
+      "name": "read deadline retains cache, ignores a late reply, and avoids duplicate hung RPCs"
+    },
+    {
+      "file": "tests/client-scheduler.test.cjs",
+      "name": "repeated polling errors preserve cache and report the same failure once"
+    },
+    {
+      "file": "tests/client-scheduler.test.cjs",
+      "name": "simultaneous explicit loads share one RPC and return independent queue copies"
+    },
+    {
+      "file": "tests/client-scheduler.test.cjs",
+      "name": "the read deadline never times out an in-flight CAS"
+    },
+    {
+      "file": "tests/client-scheduler.test.cjs",
+      "name": "unsubscribing during an in-flight poll prevents late listener delivery and rescheduling"
+    },
+    {
+      "file": "tests/coordinator-protocol.test.cjs",
+      "name": "actual owner removes A, rejects old follower A, and sends only B after reload"
+    },
+    {
+      "file": "tests/coordinator-protocol.test.cjs",
+      "name": "actual Undo restores a new generation and old follower edits and deletes cannot change it"
+    },
+    {
+      "file": "tests/coordinator-protocol.test.cjs",
+      "name": "filesystem commit notifications reach a different host without waiting for fallback polling"
+    },
+    {
+      "file": "tests/coordinator-protocol.test.cjs",
+      "name": "Stop then a new message with identical text uses a fresh ID and is not discarded as a duplicate"
+    },
+    {
+      "file": "tests/coordinator-protocol.test.cjs",
+      "name": "two actual coordinators exchange canonical state and follower Undo metadata through the RPC"
+    },
+    {
+      "file": "tests/coordinator-v2.test.cjs",
+      "name": "a follower receives canonical restored state through RPC even when every owner broadcast is lost"
+    },
+    {
+      "file": "tests/coordinator-v2.test.cjs",
+      "name": "a pending v1 journal entry is canonical before sending and does not become uncertain without a model call"
+    },
+    {
+      "file": "tests/coordinator-v2.test.cjs",
+      "name": "a sender with stale pending state does not send after a different writer already persisted sending during CAS retry"
+    },
+    {
+      "file": "tests/coordinator-v2.test.cjs",
+      "name": "a stale clear does not report a restored message as removed when canonical storage keeps it"
+    },
+    {
+      "file": "tests/coordinator-v2.test.cjs",
+      "name": "a stale remove does not report a restored message as removed when canonical storage keeps it"
+    },
+    {
+      "file": "tests/coordinator-v2.test.cjs",
+      "name": "an implicit generation-zero removal cannot delete a restored generation-one message after CAS retry"
+    },
+    {
+      "file": "tests/coordinator-v2.test.cjs",
+      "name": "partial history does not replay an uncertain message, and a later positive receipt removes it without sending"
+    },
+    {
+      "file": "tests/coordinator.test.cjs",
+      "name": "a stale follower snapshot cannot delete unseen B or rewind sending A; explicit deletion still works"
+    },
+    {
+      "file": "tests/coordinator.test.cjs",
+      "name": "actual submission path: A plus two follow-ups in queue mode, then reload"
+    },
+    {
+      "file": "tests/coordinator.test.cjs",
+      "name": "actual submission path: A plus two follow-ups in steer mode, then reload"
+    },
+    {
+      "file": "tests/coordinator.test.cjs",
+      "name": "all modified shipped bundles remain syntactically valid"
+    },
+    {
+      "file": "tests/coordinator.test.cjs",
+      "name": "an unconfirmed sending entry survives reload without being automatically resent"
+    },
+    {
+      "file": "tests/coordinator.test.cjs",
+      "name": "CONTROL: the original coordinator resends a restored pending message even with a positive receipt"
+    },
+    {
+      "file": "tests/coordinator.test.cjs",
+      "name": "CONTROL: the unmodified shipped coordinator erases its one message on an empty storage refresh"
+    },
+    {
+      "file": "tests/coordinator.test.cjs",
+      "name": "positive receipt removes only delivered A before lock acquisition and still executes waiting B"
+    },
+    {
+      "file": "tests/coordinator.test.cjs",
+      "name": "the actual coordinator + new storage keep the prompt through stale Memento delivery and then send it once"
+    },
+    {
+      "file": "tests/coordinator.test.cjs",
+      "name": "the actual patched extension-host storage class constructs the journal and keeps unrelated settings working"
+    },
+    {
+      "file": "tests/coordinator.test.cjs",
+      "name": "the injected storage adapter is executable and exposes the journal operations"
+    },
+    {
+      "file": "tests/coordinator.test.cjs",
+      "name": "the response serialization repair preserves false, zero and null and rejects malformed JSON"
+    },
+    {
+      "file": "tests/coordinator.test.cjs",
+      "name": "twenty sequential submissions survive storage refreshes and remain exactly once in the transport log"
+    },
+    {
+      "file": "tests/lock-recovery.test.cjs",
+      "name": "a crash while preparing metadata leaves no shared active lock"
+    },
+    {
+      "file": "tests/lock-recovery.test.cjs",
+      "name": "a killed real writer after journal commit is recovered without losing committed state"
+    },
+    {
+      "file": "tests/lock-recovery.test.cjs",
+      "name": "a killed real writer before journal commit is recovered without losing committed state"
+    },
+    {
+      "file": "tests/lock-recovery.test.cjs",
+      "name": "a live or reused PID remains protected even with ancient metadata"
+    },
+    {
+      "file": "tests/lock-recovery.test.cjs",
+      "name": "an empty active directory is recoverable without using age as a lease"
+    },
+    {
+      "file": "tests/lock-recovery.test.cjs",
+      "name": "an existing legacy writer.lock file is never overwritten by Windows directory rename"
+    },
+    {
+      "file": "tests/lock-recovery.test.cjs",
+      "name": "an unsupported active lock file is rejected and preserved"
+    },
+    {
+      "file": "tests/lock-recovery.test.cjs",
+      "name": "an unverifiable PID or malformed owner is never automatically removed"
+    },
+    {
+      "file": "tests/lock-recovery.test.cjs",
+      "name": "background cleanup frees followers without requiring another request from the owner"
+    },
+    {
+      "file": "tests/lock-recovery.test.cjs",
+      "name": "cleanup failure after commit reports success and retries the same owner before the next write"
+    },
+    {
+      "file": "tests/lock-recovery.test.cjs",
+      "name": "cleanup failure never replaces the primary operation failure"
+    },
+    {
+      "file": "tests/lock-recovery.test.cjs",
+      "name": "the optional proposal reconciler persists and returns its document without changing the default API"
+    },
+    {
+      "file": "tests/lock-recovery.test.cjs",
+      "name": "the permanent compatibility gate blocks v1 open(wx) writers"
+    },
+    {
+      "file": "tests/lock-recovery.test.cjs",
+      "name": "two real recovery competitors cannot let a delayed remover delete a new owner"
+    },
+    {
+      "file": "tests/lock-recovery.test.cjs",
+      "name": "Windows transient journal rename and owner unlink errors are retried"
+    },
+    {
+      "file": "tests/multiprocess.test.cjs",
+      "name": "four independent host processes append 48 messages without lost updates"
+    },
+    {
+      "file": "tests/packaging.test.cjs",
+      "name": "CONTROL: shipping the store under the old wrong filename fails packaged host startup"
+    },
+    {
+      "file": "tests/packaging.test.cjs",
+      "name": "the packaged host starts with real relative imports and writes and reads an isolated journal"
+    },
+    {
+      "file": "tests/protocol.test.cjs",
+      "name": "a CAS conflict cannot upgrade an earlier removal intent to a concurrently restored generation"
+    },
+    {
+      "file": "tests/protocol.test.cjs",
+      "name": "a proposal carrying a foreign epoch cannot implicitly retire the current message"
+    },
+    {
+      "file": "tests/protocol.test.cjs",
+      "name": "an explicit removal from generation zero cannot remove an Undo at generation one"
+    },
+    {
+      "file": "tests/protocol.test.cjs",
+      "name": "corrupt or missing retirement records in a v2 journal are errors, never empty success"
+    },
+    {
+      "file": "tests/protocol.test.cjs",
+      "name": "explicit Undo advances generation and an old snapshot cannot overwrite the restored entry"
+    },
+    {
+      "file": "tests/protocol.test.cjs",
+      "name": "incorrect restore metadata or incoming generations are rejected without changing the document"
+    },
+    {
+      "file": "tests/protocol.test.cjs",
+      "name": "retirement blocks a stale payload even when the client reads a fresh CAS revision"
+    },
+    {
+      "file": "tests/protocol.test.cjs",
+      "name": "retirement persists across a new host and client instance"
+    },
+    {
+      "file": "tests/protocol.test.cjs",
+      "name": "throwing hint listeners and their diagnostics cannot turn a committed write into failure"
+    },
+    {
+      "file": "tests/protocol.test.cjs",
+      "name": "watcher errors close the watcher even when diagnostics throw"
+    },
+    {
+      "file": "tests/protocol.test.cjs",
+      "name": "watcher read errors do not create an unhandled rejection when diagnostics throw"
+    },
+    {
+      "file": "tests/storage.test.cjs",
+      "name": "a delayed empty Memento snapshot and an unrelated settings write cannot erase a committed prompt"
+    },
+    {
+      "file": "tests/storage.test.cjs",
+      "name": "a held or abandoned lock fails with an error without overwriting state"
+    },
+    {
+      "file": "tests/storage.test.cjs",
+      "name": "a stale snapshot cannot resurrect a deleted delivered entry"
+    },
+    {
+      "file": "tests/storage.test.cjs",
+      "name": "concurrent appends to the same thread preserve all message IDs"
+    },
+    {
+      "file": "tests/storage.test.cjs",
+      "name": "legacy messages are backed up and paused; migration never silently replays them"
+    },
+    {
+      "file": "tests/storage.test.cjs",
+      "name": "read errors and corrupt JSON are rejected, never converted into empty queues"
+    },
+    {
+      "file": "tests/storage.test.cjs",
+      "name": "subscribed clients observe another window and stop polling on disposal"
+    },
+    {
+      "file": "tests/storage.test.cjs",
+      "name": "two clients starting from the same revision retry only the storage mutation, preserving both threads"
+    },
+    {
+      "file": "tests/two-window-stress.test.cjs",
+      "name": "180 two-window protocol cycles preserve additions and removals during competing writes"
+    }
+  ],
+  "regressions": [
+    {
+      "id": "client-scheduling",
+      "assertion": "Slow reads do not accumulate polling work ahead of user operations; reads coalesce without crossing writes, timeout preserves cached messages, lost CAS replies remain ambiguous, disposal and hints are ordered correctly.",
+      "tests": [
+        "a load requested after a write cannot coalesce with a preceding stale read",
+        "a lost CAS reply is explicitly ambiguous and neither storage mutation nor updater is repeated",
+        "a second protocol hint arriving during a read triggers a fresh read after that snapshot",
+        "a slow background read produces no polling backlog ahead of a user write",
+        "canonical server queue replaces stale input, and protocol metadata is sent only in CAS parameters",
+        "control: original interval scheduler accumulates reads ahead of a user write",
+        "disposing a listener during notification suppresses its queued callback",
+        "many synchronous hints coalesce and disposal prevents a scheduled hint refresh",
+        "read deadline retains cache, ignores a late reply, and avoids duplicate hung RPCs",
+        "repeated polling errors preserve cache and report the same failure once",
+        "simultaneous explicit loads share one RPC and return independent queue copies",
+        "the read deadline never times out an in-flight CAS",
+        "unsubscribing during an in-flight poll prevents late listener delivery and rescheduling"
+      ]
+    },
+    {
+      "id": "shipped-coordinator",
+      "assertion": "Control cases reproduce the original lost-message and duplicate-send defects. The patched shipped coordinator persists submissions, reconciles positive receipts, protects uncertain sends, preserves queue and steer behavior, and all injected bundles parse and execute.",
+      "tests": [
+        "a stale follower snapshot cannot delete unseen B or rewind sending A; explicit deletion still works",
+        "actual submission path: A plus two follow-ups in queue mode, then reload",
+        "actual submission path: A plus two follow-ups in steer mode, then reload",
+        "all modified shipped bundles remain syntactically valid",
+        "an unconfirmed sending entry survives reload without being automatically resent",
+        "CONTROL: the original coordinator resends a restored pending message even with a positive receipt",
+        "CONTROL: the unmodified shipped coordinator erases its one message on an empty storage refresh",
+        "positive receipt removes only delivered A before lock acquisition and still executes waiting B",
+        "the actual coordinator + new storage keep the prompt through stale Memento delivery and then send it once",
+        "the actual patched extension-host storage class constructs the journal and keeps unrelated settings working",
+        "the injected storage adapter is executable and exposes the journal operations",
+        "the response serialization repair preserves false, zero and null and rejects malformed JSON",
+        "twenty sequential submissions survive storage refreshes and remain exactly once in the transport log"
+      ]
+    },
+    {
+      "id": "coordinator-protocol",
+      "assertion": "Actual owner/follower coordinators exchange canonical state and Undo metadata; retirement survives reload, new IDs survive Stop, and filesystem hints reach another host.",
+      "tests": [
+        "actual owner removes A, rejects old follower A, and sends only B after reload",
+        "actual Undo restores a new generation and old follower edits and deletes cannot change it",
+        "filesystem commit notifications reach a different host without waiting for fallback polling",
+        "Stop then a new message with identical text uses a fresh ID and is not discarded as a duplicate",
+        "two actual coordinators exchange canonical state and follower Undo metadata through the RPC"
+      ]
+    },
+    {
+      "id": "coordinator-cas-reconciliation",
+      "assertion": "CAS retries retain the original removal generation; stale delete/clear results reflect canonical storage, legacy pending entries normalize before sending, and partial history never authorizes uncertain replay. Canonical RPC responses survive lost broadcasts, and a CAS retry cannot send an entry another writer already marked as sending.",
+      "tests": [
+        "a follower receives canonical restored state through RPC even when every owner broadcast is lost",
+        "a pending v1 journal entry is canonical before sending and does not become uncertain without a model call",
+        "a sender with stale pending state does not send after a different writer already persisted sending during CAS retry",
+        "a stale clear does not report a restored message as removed when canonical storage keeps it",
+        "a stale remove does not report a restored message as removed when canonical storage keeps it",
+        "an implicit generation-zero removal cannot delete a restored generation-one message after CAS retry",
+        "partial history does not replay an uncertain message, and a later positive receipt removes it without sending"
+      ]
+    },
+    {
+      "id": "lock-recovery",
+      "assertion": "Real process death before/after commit is recoverable; delayed cleanup cannot delete a new owner; live, reused, unknown, malformed and legacy owners remain protected; transient filesystem errors and post-commit cleanup preserve the actual commit result.",
+      "tests": [
+        "a crash while preparing metadata leaves no shared active lock",
+        "a killed real writer after journal commit is recovered without losing committed state",
+        "a killed real writer before journal commit is recovered without losing committed state",
+        "a live or reused PID remains protected even with ancient metadata",
+        "an empty active directory is recoverable without using age as a lease",
+        "an existing legacy writer.lock file is never overwritten by Windows directory rename",
+        "an unsupported active lock file is rejected and preserved",
+        "an unverifiable PID or malformed owner is never automatically removed",
+        "background cleanup frees followers without requiring another request from the owner",
+        "cleanup failure after commit reports success and retries the same owner before the next write",
+        "cleanup failure never replaces the primary operation failure",
+        "the optional proposal reconciler persists and returns its document without changing the default API",
+        "the permanent compatibility gate blocks v1 open(wx) writers",
+        "two real recovery competitors cannot let a delayed remover delete a new owner",
+        "Windows transient journal rename and owner unlink errors are retried"
+      ]
+    },
+    {
+      "id": "multiple-processes",
+      "assertion": "Four independent hosts append 48 message IDs without losing concurrent updates.",
+      "tests": [
+        "four independent host processes append 48 messages without lost updates"
+      ]
+    },
+    {
+      "id": "durable-retirement",
+      "assertion": "Retired IDs reject stale payloads even with a fresh CAS revision; explicit Undo increments generations, stale edits/removals cannot change restored entries, corrupted metadata fails closed, and hint diagnostics cannot turn a commit into failure.",
+      "tests": [
+        "a CAS conflict cannot upgrade an earlier removal intent to a concurrently restored generation",
+        "a proposal carrying a foreign epoch cannot implicitly retire the current message",
+        "an explicit removal from generation zero cannot remove an Undo at generation one",
+        "corrupt or missing retirement records in a v2 journal are errors, never empty success",
+        "explicit Undo advances generation and an old snapshot cannot overwrite the restored entry",
+        "incorrect restore metadata or incoming generations are rejected without changing the document",
+        "retirement blocks a stale payload even when the client reads a fresh CAS revision",
+        "retirement persists across a new host and client instance",
+        "throwing hint listeners and their diagnostics cannot turn a committed write into failure",
+        "watcher errors close the watcher even when diagnostics throw",
+        "watcher read errors do not create an unhandled rejection when diagnostics throw"
+      ]
+    },
+    {
+      "id": "durable-storage",
+      "assertion": "The revisioned journal resists stale Memento snapshots, concurrent writers and malformed reads; legacy migration is paused and backed up, and observers stop on disposal.",
+      "tests": [
+        "a delayed empty Memento snapshot and an unrelated settings write cannot erase a committed prompt",
+        "a held or abandoned lock fails with an error without overwriting state",
+        "a stale snapshot cannot resurrect a deleted delivered entry",
+        "concurrent appends to the same thread preserve all message IDs",
+        "legacy messages are backed up and paused; migration never silently replays them",
+        "read errors and corrupt JSON are rejected, never converted into empty queues",
+        "subscribed clients observe another window and stop polling on disposal",
+        "two clients starting from the same revision retry only the storage mutation, preserving both threads"
+      ]
+    },
+    {
+      "id": "packaged-host-startup",
+      "assertion": "The shipped host storage class must resolve its real relative CommonJS dependencies and perform isolated journal reads and writes. Recreating repair 2 with queue-store.cjs renamed to codex-queue-store.cjs must fail startup. The completed VSIX and installed directory are checked separately in both runtimes.",
+      "tests": [
+        "CONTROL: shipping the store under the old wrong filename fails packaged host startup",
+        "the packaged host starts with real relative imports and writes and reads an isolated journal"
+      ]
+    },
+    {
+      "id": "two-window-stress",
+      "assertion": "Three seeded schedules run 180 add/read/remove cycles while a second independent client continually writes the same journal; verify persisted state, cross-window reads, retirement and legacy migration.",
+      "tests": [
+        "180 two-window protocol cycles preserve additions and removals during competing writes"
+      ]
+    }
+  ],
+  "limitations": [
+    "These are headless code, filesystem and mocked-transport tests; they do not prove live VS Code UI behavior or successful delivery to a production model.",
+    "Positive loaded receipts can suppress a repeat send. Missing or partially loaded history is not proof that a message was never delivered; uncertain sends must remain paused.",
+    "The read transport has no cancellation API. A truly hung read is retained instead of multiplying RPCs, and recovery may require reconnection or reload.",
+    "An unverified or live lock owner is intentionally not deleted. Legacy writer.lock files require inspection after old extension hosts close.",
+    "The separate journal is not reverse-synchronized to native extension storage. Rollback must retain and expose saved messages for review.",
+    "Injected source changes are pinned to official release hashes; a different upstream build requires a new review and both runtime checks."
+  ],
+  "manualUserChecks": [
+    "After installation and restart, send several sequential messages in a new chat; verify that each appears and receives one response.",
+    "While an answer is running, send two follow-ups; check delivery in queue mode and then in steer mode.",
+    "Use Stop with a pending message; check the saved message, resume action and a newly sent message with identical text.",
+    "Delete and Undo a saved message; with two windows open, verify that an older window does not restore deleted text or erase the restored message.",
+    "Restart with a saved or uncertain message; check that it remains visible and is not silently executed again.",
+    "Check text and image attachments, visible recovery controls and saved-message warnings. These UI checks are performed by the user, not by automation."
+  ]
+}

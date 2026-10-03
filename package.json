@@ -1,0 +1,18 @@
+{
+  "name": "codex-local-queue-fix",
+  "version": "0.2.1",
+  "author": "IveSan83 (Eugene Bondarenko)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/IveSan83/codex-vscode-queue-repair.git"
+  },
+  "private": true,
+  "scripts": {
+    "test": "node tools/verify.cjs --runtime node",
+    "verify": "node tools/verify.cjs --runtime all",
+    "prepare-fixture": "python build.py --prepare",
+    "build": "python build.py"
+  },
+  "devDependencies": { "prettier": "3.6.2", "acorn": "8.15.0" }
+}

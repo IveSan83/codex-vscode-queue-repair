@@ -1,0 +1,21 @@
+{
+  "26.930.31428": {
+    "vsixSha256": "7a5b1484c0f994ef12f96865568abc6648862082edb433fafd4321d4a7cb5fea",
+    "downloadUrl": "https://openai.gallerycdn.vsassets.io/extensions/openai/chatgpt/26.930.31428/1790986103689/Microsoft.VisualStudio.Services.VSIXPackage",
+    "files": {
+      "host": "out/extension.js",
+      "adapter": "webview/assets/app-initial-648a124cdf5c.js",
+      "coordinator": "webview/assets/app-initial-ed6dbbafcc61.js"
+    },
+    "hashes": {
+      "host": "7262cf45b87e7c2a7cb631ccb049a1ec2698a41c2f171bb6264c971a76f8d6d2",
+      "adapter": "3e772f309b5b057683af1566b5062383ba8a63bcaaa87791533b12857099737c",
+      "coordinator": "ac55d0a69d4d91abbdec340165bcb740669b9b3ddc6b9dae192aca3c925cb03e"
+    },
+    "adapterFunction": "wen",
+    "coordinatorClass": "DAn",
+    "prepareFunction": "CAn",
+    "emptyQueue": "NQ",
+    "sandboxAliases": {"Rq":"zq","NQ":"PQ","EAn":"TAn","jQ":"MQ","TAn":"wAn","MQ":"NQ","B":"z","M":"se","Oe":"ft","eX":"tX","at":"Lt","He":"le","Ht":"Ce","ze":"M"}
+  }
+}
