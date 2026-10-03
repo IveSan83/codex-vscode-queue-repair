@@ -24,12 +24,17 @@ async function smoke(extensionDirectory) {
   const hostPath = path.join(directory, 'out', 'extension.js');
   const requireFromHost = createRequire(hostPath);
   const hostSource = fs.readFileSync(hostPath, 'utf8');
-  const hostClass = expression(hostSource, 'XF=class', 3).code;
+  const version=JSON.parse(fs.readFileSync(path.join(directory,'package.json'),'utf8')).version;
+  const release=require('../releases.json')[version];
+  if(!release)throw Error('Unsupported smoke-test release '+version);
+  const className=release.hostClass??'XF';
+  const aliases=release.hostSandboxAliases??{namespace:'QF',isRemote:'wX',unrelatedHelper:'Soe'};
+  const hostClass = expression(hostSource, className+'=class', className.length+1).code;
   const XF = vm.runInNewContext(`(${hostClass})`, {
     require: requireFromHost,
-    QF: {EventEmitter},
-    wX: () => false,
-    Soe: () => undefined,
+    [aliases.namespace]: {EventEmitter},
+    [aliases.isRemote]: () => false,
+    [aliases.unrelatedHelper]: () => undefined,
     console,
   });
   const temporaryRoot = await fsp.realpath(os.tmpdir());

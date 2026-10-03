@@ -16,7 +16,7 @@ New-Item -ItemType Directory -Path $taskArtifacts -Force | Out-Null
 Push-Location -LiteralPath $taskRoot
 Start-Transcript -LiteralPath (Join-Path $taskArtifacts 'setup.log') -Append | Out-Null
 try {
-    Write-Output 'Codex queue repair 2.1 - IveSan83'
+    Write-Output 'Codex queue repair 2.2 - IveSan83'
     Write-Output 'https://github.com/IveSan83/codex-vscode-queue-repair'
     & npm.cmd ci --ignore-scripts --no-audit --no-fund
     if ($LASTEXITCODE -ne 0) { throw 'Dependency installation failed.' }

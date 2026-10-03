@@ -108,18 +108,20 @@ test('all modified shipped bundles remain syntactically valid',()=>{
 test('the injected storage adapter is executable and exposes the journal operations',async t=>{
   const {host}=await durableStorage(t);
   const adapter=expression(patched.adapter,'function '+source.profile.adapterFunction+'(').code;
-  const factory=vm.runInNewContext(`(${adapter})`,{pm:()=>{},nv:()=>{},console,setInterval,clearInterval,setTimeout,clearTimeout,queueMicrotask});
+  const factory=vm.runInNewContext(`(${adapter})`,{pm:()=>{},[source.profile.adapterWriteValue??'nv']:()=>{},console,setInterval,clearInterval,setTimeout,clearTimeout,queueMicrotask});
   const storage=factory({},(method,{params})=>method==='queue-repair-read'?host.read():host.compareAndSet(params));
   await storage.updateQueuedFollowUps(s=>({...s,thread:[message('injected')]}));
   assert.equal((await storage.loadQueuedFollowUps()).thread[0].id,'injected');
 });
 test('the actual patched extension-host storage class constructs the journal and keeps unrelated settings working',async t=>{
   const dir=await fs.mkdtemp(path.join(os.tmpdir(),'codex-host-test-'));t.after(()=>fs.rm(dir,{force:true,recursive:true}));
-  const cls=expression(patched.host,'XF=class',3).code;
+  const hostClass=source.profile.hostClass??'XF';
+  const cls=expression(patched.host,hostClass+'=class',hostClass.length+1).code;
+  const aliases=source.profile.hostSandboxAliases??{namespace:'QF',isRemote:'wX',unrelatedHelper:'Soe'};
   const XF=vm.runInNewContext(`(${cls})`,{
     require:name=>{assert.equal(name,'./codex-queue-protocol.cjs');return{QueueProtocolStore}},
-    QF:{EventEmitter:class {event=()=>({dispose(){}});fire(){};dispose(){}}},
-    wX:()=>false,Soe:()=>undefined
+    [aliases.namespace]:{EventEmitter:class {event=()=>({dispose(){}});fire(){};dispose(){}}},
+    [aliases.isRemote]:()=>false,[aliases.unrelatedHelper]:()=>undefined
   });
   let snapshot={theme:'dark'};
   const state=new XF({get:key=>snapshot[key],update:async(key,value)=>{snapshot[key]=value}},dir);

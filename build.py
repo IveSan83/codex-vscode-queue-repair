@@ -11,8 +11,8 @@ import os
 import zipfile
 
 ROOT = Path(__file__).resolve().parent
-VERSION = '26.930.31428'
-PATCH_VERSION = '2.1'
+VERSION = '26.930.31730'
+PATCH_VERSION = '2.2'
 OFFICIAL = ROOT / 'artifacts' / ('official-' + VERSION + '-win32-x64.vsix')
 NATIVE = 'extension/bin/windows-x86_64/codex.exe'
 NATIVE_SHA = 'fdda5fa3cf3fb3d000b876720742857676293e4315e4b045fae6f8bd7e866d1d'
@@ -37,7 +37,7 @@ def download_official():
     descriptor, temporary_name = tempfile.mkstemp(prefix='official-download-', suffix='.vsix', dir=OFFICIAL.parent)
     temporary = Path(temporary_name)
     print('Downloading the pinned official Windows x64 VSIX...', flush=True)
-    request = urllib.request.Request(profile['downloadUrl'], headers={'User-Agent': 'codex-vscode-queue-repair/2.1', 'Accept-Encoding': 'identity'})
+    request = urllib.request.Request(profile['downloadUrl'], headers={'User-Agent': 'codex-vscode-queue-repair/2.2', 'Accept-Encoding': 'identity'})
     try:
         with os.fdopen(descriptor, 'wb') as output, urllib.request.urlopen(request, timeout=60) as response:
             shutil.copyfileobj(response, output, length=1024 * 1024)
@@ -58,8 +58,8 @@ def verified_official(file):
     pkg = json.loads(archive.read('extension/package.json'))
     if (pkg['publisher'], pkg['name'], pkg['version']) != ('openai', 'chatgpt', VERSION):
         raise RuntimeError('Unexpected official package identity')
-    for key, relative in profile['files'].items():
-        if sha_entry(archive, 'extension/' + relative) != profile['hashes'][key]:
+    for key, relative in {**profile['files'], **profile.get('testFiles', {})}.items():
+        if sha_entry(archive, 'extension/' + relative) != (profile['hashes'].get(key) or profile.get('testHashes', {}).get(key)):
             raise RuntimeError('Unexpected official bundle: ' + relative)
     if sha_entry(archive, NATIVE) != NATIVE_SHA:
         raise RuntimeError('Unexpected official native runtime')
@@ -67,7 +67,7 @@ def verified_official(file):
 
 def prepare(archive, profile):
     fixture = ROOT / 'artifacts/base/extension'
-    for relative in [*profile['files'].values(), 'package.json']:
+    for relative in [*profile['files'].values(), *profile.get('testFiles', {}).values(), 'package.json']:
         target = fixture / relative
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_bytes(archive.read('extension/' + relative))
@@ -130,7 +130,7 @@ def build(archive, profile):
         raise RuntimeError('Build outputs already exist; use a fresh reviewed worktree')
     stage.mkdir()
     # Stage modified inputs; every other entry is streamed from the original.
-    for relative in [*profile['files'].values(), 'package.json']:
+    for relative in [*profile['files'].values(), *profile.get('testFiles', {}).values(), 'package.json']:
         target = stage / relative
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_bytes(archive.read('extension/' + relative))

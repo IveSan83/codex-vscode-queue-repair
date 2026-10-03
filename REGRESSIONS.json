@@ -223,6 +223,54 @@
       "name": "four independent host processes append 48 messages without lost updates"
     },
     {
+      "file": "tests/new-data-paths.test.cjs",
+      "name": "OFFICIAL 31730 data: aborted plugin scan sends no transport request"
+    },
+    {
+      "file": "tests/new-data-paths.test.cjs",
+      "name": "OFFICIAL 31730 data: boundedCloudHistoryReady completes a waiting cloud history load"
+    },
+    {
+      "file": "tests/new-data-paths.test.cjs",
+      "name": "OFFICIAL 31730 data: compactHistoryComplete completes a waiting cloud history load"
+    },
+    {
+      "file": "tests/new-data-paths.test.cjs",
+      "name": "OFFICIAL 31730 data: failed cloud load disposes both history subscriptions"
+    },
+    {
+      "file": "tests/new-data-paths.test.cjs",
+      "name": "OFFICIAL 31730 data: final plugin history page retires its scan"
+    },
+    {
+      "file": "tests/new-data-paths.test.cjs",
+      "name": "OFFICIAL 31730 data: incomplete history does not prematurely complete its waiter"
+    },
+    {
+      "file": "tests/new-data-paths.test.cjs",
+      "name": "OFFICIAL 31730 data: one page preserves continuation and deduplicates plugin IDs"
+    },
+    {
+      "file": "tests/new-data-paths.test.cjs",
+      "name": "OFFICIAL 31730 data: repeated non-null plugin history cursor fails instead of looping"
+    },
+    {
+      "file": "tests/official-contract.test.cjs",
+      "name": "OFFICIAL 31730: nonempty successful response remains readable"
+    },
+    {
+      "file": "tests/official-contract.test.cjs",
+      "name": "OFFICIAL 31730: real lock-release handler performs release but returns undefined"
+    },
+    {
+      "file": "tests/official-contract.test.cjs",
+      "name": "OFFICIAL 31730: real response parser rejects undefined JSON after cleaning pending request"
+    },
+    {
+      "file": "tests/official-contract.test.cjs",
+      "name": "REPAIR CANDIDATE 31730: null serialization passes the same real response parser"
+    },
+    {
       "file": "tests/packaging.test.cjs",
       "name": "CONTROL: shipping the store under the old wrong filename fails packaged host startup"
     },
@@ -446,6 +494,30 @@
       "assertion": "Three seeded schedules run 180 add/read/remove cycles while a second independent client continually writes the same journal; verify persisted state, cross-window reads, retirement and legacy migration.",
       "tests": [
         "180 two-window protocol cycles preserve additions and removals during competing writes"
+      ]
+    },
+    {
+      "id": "official-response-contract",
+      "assertion": "The original shipped release handler returns undefined after release and the actual response parser rejects its missing JSON. Null normalization and nonempty responses remain readable.",
+      "tests": [
+        "OFFICIAL 31730: nonempty successful response remains readable",
+        "OFFICIAL 31730: real lock-release handler performs release but returns undefined",
+        "OFFICIAL 31730: real response parser rejects undefined JSON after cleaning pending request",
+        "REPAIR CANDIDATE 31730: null serialization passes the same real response parser"
+      ]
+    },
+    {
+      "id": "upstream-data-loading",
+      "assertion": "The shipped cloud-history waiter handles both completion events, keeps incomplete history waiting and disposes subscriptions. Plugin scanning rejects repeated cursors, preserves continuation, deduplicates IDs and stops before transport on abort.",
+      "tests": [
+        "OFFICIAL 31730 data: aborted plugin scan sends no transport request",
+        "OFFICIAL 31730 data: boundedCloudHistoryReady completes a waiting cloud history load",
+        "OFFICIAL 31730 data: compactHistoryComplete completes a waiting cloud history load",
+        "OFFICIAL 31730 data: failed cloud load disposes both history subscriptions",
+        "OFFICIAL 31730 data: final plugin history page retires its scan",
+        "OFFICIAL 31730 data: incomplete history does not prematurely complete its waiter",
+        "OFFICIAL 31730 data: one page preserves continuation and deduplicates plugin IDs",
+        "OFFICIAL 31730 data: repeated non-null plugin history cursor fails instead of looping"
       ]
     }
   ],

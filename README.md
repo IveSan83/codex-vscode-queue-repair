@@ -1,7 +1,7 @@
 # Codex VS Code queue repair
 
 An independent repair for disappearing, restored and stalled follow-up messages
-in **openai.chatgpt 26.930.31428 on Windows x64**.
+in **openai.chatgpt 26.930.31730 on Windows x64**.
 
 **Repair author: IveSan83 (Eugene Bondarenko)**
 
@@ -22,14 +22,14 @@ in PATH, Node.js 22 or newer with npm, Python 3.11 or newer, internet access and
 approximately 3 GB of free disk space. Git is optional. A custom VS Code location
 can be specified through `CODEX_QUEUE_VERIFY_CODE_EXE`.
 
-1. Download `codex-vscode-queue-repair-2.1.0.zip` from the release page and extract
+1. Download `codex-vscode-queue-repair-2.2.0.zip` from the release page and extract
    it into a new folder.
 2. Close all VS Code windows so that old extension hosts stop.
 3. Double-click **START.cmd**. It downloads the official extension, checks it,
    runs the registered tests in Node and VS Code's Electron runtime, builds and
    checks the finished VSIX, and installs it. The Electron checks run as Node
    processes without opening the editor.
-4. Open VS Code. The extension appears as **Codex (local queue repair 2.1)**.
+4. Open VS Code. The extension appears as **Codex (local queue repair 2.2)**.
    Check normal messages, follow-ups, Stop, Steer and two-window use.
 
 For a terminal installation from the extracted folder:
@@ -142,10 +142,10 @@ journal; returning to this repair preserves it.
 
 ## Scope and limitations
 
-Only **26.930.31428 win32-x64** is supported by this package. Different official
+Only **26.930.31730 win32-x64** is supported by this package. Different official
 archive or bundle hashes are rejected until a release profile and patch anchors
 are reviewed. User reports also describe the regression in 26.928.31416,
-26.928.40906 and 26.930.21537; this download does not patch those packages.
+26.928.40906, 26.930.21537 and 26.930.31428; this download does not patch those packages.
 
 Transport callbacks in the automated coordinator tests are controlled doubles.
 These tests do not guarantee exactly-once external actions, resolve network or
@@ -153,9 +153,12 @@ server failures, or replace a live UI check. An unresolved delivery is preserved
 for review. Retired IDs are retained and the journal grows over time. A hung
 host RPC can require reloading the window.
 
-The release comparison is in `reports/release-diff.md`. The queue-specific
-comparison did not establish an upstream repair in 26.930.31428; its native
-runtime and other features did change.
+The new comparison is in `reports/release-31730.md`; the previous comparison
+is retained in `reports/release-diff.md`. The 31730 package retains the affected
+queue components and the same native runtime. Repair 2.2 ports the hash-pinned
+repair to this package and requires 88 tests in each runtime (176 executions).
+Download the sanitized test-results ZIP from the release for TAP logs, the
+verification summary, package audit and source hashes.
 
 ## Build manually
 

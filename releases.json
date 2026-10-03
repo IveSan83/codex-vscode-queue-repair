@@ -16,6 +16,68 @@
     "coordinatorClass": "DAn",
     "prepareFunction": "CAn",
     "emptyQueue": "NQ",
-    "sandboxAliases": {"Rq":"zq","NQ":"PQ","EAn":"TAn","jQ":"MQ","TAn":"wAn","MQ":"NQ","B":"z","M":"se","Oe":"ft","eX":"tX","at":"Lt","He":"le","Ht":"Ce","ze":"M"}
+    "sandboxAliases": {
+      "Rq": "zq",
+      "NQ": "PQ",
+      "EAn": "TAn",
+      "jQ": "MQ",
+      "TAn": "wAn",
+      "MQ": "NQ",
+      "B": "z",
+      "M": "se",
+      "Oe": "ft",
+      "eX": "tX",
+      "at": "Lt",
+      "He": "le",
+      "Ht": "Ce",
+      "ze": "M"
+    }
+  },
+  "26.930.31730": {
+    "vsixSha256": "de39fdeeb6707d55a5f797426d4871adcf8a1e5d3d7d2d128957b43e88c2576b",
+    "downloadUrl": "https://openai.gallerycdn.vsassets.io/extensions/openai/chatgpt/26.930.31730/1790996661385/Microsoft.VisualStudio.Services.VSIXPackage",
+    "files": {
+      "host": "out/extension.js",
+      "adapter": "webview/assets/app-initial-8b38f95f65ff.js",
+      "coordinator": "webview/assets/app-initial-ef6113854c2e.js"
+    },
+    "hashes": {
+      "host": "5eb050f6c72ffdd60114e1e5f5800b8368353b6922e49abe19adde4782a03e9f",
+      "adapter": "1d816b9334bcdaabe783679c190581b30908ac57a0650056649b5461cdea87f0",
+      "coordinator": "68274a169d7cf58b09222494545353519818783239a769b7b7987e670415dbf7"
+    },
+    "adapterFunction": "Oen",
+    "coordinatorClass": "EAn",
+    "prepareFunction": "SAn",
+    "emptyQueue": "NQ",
+    "sandboxAliases": {
+      "Vq": "zq",
+      "NQ": "PQ",
+      "TAn": "TAn",
+      "jQ": "MQ",
+      "wAn": "wAn",
+      "MQ": "NQ",
+      "m": "z",
+      "ne": "se",
+      "Pe": "ft",
+      "rX": "tX",
+      "ft": "Lt",
+      "Xt": "le",
+      "it": "Ce",
+      "oe": "M"
+    },
+    "hostClass": "ZF",
+    "hostSandboxAliases": {
+      "namespace": "KF",
+      "isRemote": "SX",
+      "unrelatedHelper": "boe"
+    },
+    "adapterWriteValue": "tv",
+    "testFiles": {
+      "response": "webview/assets/app-initial-7d34126aa1b5.js"
+    },
+    "testHashes": {
+      "response": "e3c95feeed53805e5a7fbbac95c9d51747d74c270f407c1edb9b689f756bc7f2"
+    }
   }
 }

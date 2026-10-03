@@ -3,7 +3,7 @@ const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypt
 const acorn=require('acorn');
 const {createQueueClient}=require('./queue-client.cjs');
 const releases=require('./releases.json');
-const latestVersion='26.930.31428';
+const latestVersion='26.930.31730';
 const files=releases[latestVersion].files,hashes=releases[latestVersion].hashes;
 const sha=data=>crypto.createHash('sha256').update(data).digest('hex');
 function once(text,before,after){if(text.split(before).length!==2)throw new Error('Patch anchor is not unique: '+before.slice(0,100));return text.replace(before,()=>after)}
@@ -14,8 +14,9 @@ function appendPrivateCall(code,methodName,argumentsText){const method=classAst(
 function patchSources(input){
  const profile=input.profile??{...releases[latestVersion],version:latestVersion};
  let host=input.host;
- host=once(host,'XF=class{constructor(e){this.storage=e}', 'XF=class{constructor(e,r){this.storage=e;this.queueRepair=new(require("./codex-queue-protocol.cjs").QueueProtocolStore)(r,()=>e.get("queued-follow-ups")??{},{onHint:s=>this.onDidUpdateEntryEmitter.fire({key:"queued-follow-ups",value:s.queue}),onHintError:e=>console.warn("Codex queue notification failed:",e.message)})}');
- host=once(host,'new XF(t.globalState)','new XF(t.globalState,t.globalStorageUri.fsPath)');
+ const hostClass=profile.hostClass??'XF';
+ host=once(host,hostClass+'=class{constructor(e){this.storage=e}', hostClass+'=class{constructor(e,r){this.storage=e;this.queueRepair=new(require("./codex-queue-protocol.cjs").QueueProtocolStore)(r,()=>e.get("queued-follow-ups")??{},{onHint:s=>this.onDidUpdateEntryEmitter.fire({key:"queued-follow-ups",value:s.queue}),onHintError:e=>console.warn("Codex queue notification failed:",e.message)})}');
+ host=once(host,'new '+hostClass+'(t.globalState)','new '+hostClass+'(t.globalState,t.globalStorageUri.fsPath)');
  host=once(host,'"get-global-state":async({key:e})=>{','"queue-repair-read":async()=>this.globalState.queueRepair.read(),"queue-repair-cas":async(e)=>this.globalState.queueRepair.compareAndSet(e),"get-global-state":async({key:e})=>{');
  host=once(host,'bodyJsonString:JSON.stringify(o)','bodyJsonString:JSON.stringify(o??null)');
  host=once(host,'dispose(){this.onDidUpdateEntryEmitter.dispose()','dispose(){this.queueRepair.dispose();this.onDidUpdateEntryEmitter.dispose()');
@@ -84,7 +85,7 @@ function apply(directory){
  for(const[key,rel]of Object.entries(profile.files))fs.copyFileSync(path.join(directory,rel),path.join(backup,key+'.js'));
  // Keep the store basename: the protocol module requires ./queue-store.cjs.
  const helpers={'out/queue-store.cjs':'queue-store.cjs','out/codex-queue-protocol.cjs':'queue-protocol.cjs'};
- const manifest={patchVersion:'2.1',extensionVersion:profile.version,files:{},helpers:{}};
+ const manifest={patchVersion:'2.2',extensionVersion:profile.version,files:{},helpers:{}};
  try{
   for(const[rel,source]of Object.entries(helpers)){fs.copyFileSync(path.join(__dirname,source),path.join(directory,rel));manifest.helpers[rel]=sha(fs.readFileSync(path.join(directory,rel)))}
   for(const[key,rel]of Object.entries(profile.files)){fs.writeFileSync(path.join(directory,rel),output[key]);manifest.files[rel]={original:profile.hashes[key],patched:sha(Buffer.from(output[key]))}}

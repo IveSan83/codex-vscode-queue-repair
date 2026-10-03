@@ -1,0 +1,10 @@
+'use strict';
+const fs=require('node:fs'),path=require('node:path');
+const {readOriginal,sha}=require('../patch.cjs');
+const directory=path.resolve(process.env.CODEX_QUEUE_TEST_EXTENSION||path.join(__dirname,'../artifacts/base/extension'));
+const source=readOriginal(directory);
+const relative=source.profile.testFiles?.response;
+if(!relative)throw Error('This release has no reviewed response-parser fixture');
+const bytes=fs.readFileSync(path.join(directory,relative));
+if(sha(bytes)!==source.profile.testHashes.response)throw Error('Unrecognized response-parser fixture');
+module.exports={source,responseBundle:bytes.toString('utf8')};

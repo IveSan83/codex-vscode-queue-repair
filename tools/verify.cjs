@@ -121,9 +121,9 @@ function fingerprint(files=sourceFiles()) {
   const release = releases[version];
   if (!release) throw new Error(`Unsupported test-fixture version: ${version}`);
   const fixtureHashes = {'package.json':sha256(packageBytes)};
-  for (const [key, filename] of Object.entries(release.files)) {
+  for (const [key, filename] of Object.entries({...release.files,...release.testFiles})) {
     const hash = sha256(fs.readFileSync(path.join(fixturePath, filename)));
-    if (hash !== release.hashes[key]) throw new Error(`Test fixture does not match the pinned release: ${filename}`);
+    if (hash !== (release.hashes[key]??release.testHashes?.[key])) throw new Error(`Test fixture does not match the pinned release: ${filename}`);
     fixtureHashes[filename] = hash;
   }
   const fixture = {path:fixturePath, version, files:fixtureHashes};
