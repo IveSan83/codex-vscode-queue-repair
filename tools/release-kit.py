@@ -47,7 +47,7 @@ def main():
 
     def inspect(name, data):
         text = data.decode('utf-8-sig')
-        if re.search(r'(?i)[a-z]:[\\/]', text):
+        if re.search(r'(?i)(?<![a-z0-9])[a-z]:[\\/]', text):
             raise RuntimeError('Machine-specific absolute path in publication: ' + name)
         if re.search(r'(?im)^(?:co-authored-by|generated-by):', text) or re.search(r'(?i)sk-(?:proj-)?[a-z0-9_-]{20,}|gh[pousr]_[a-z0-9]{20,}|github_pat_[a-z0-9_]{20,}', text):
             raise RuntimeError('Credential or unwanted attribution marker: ' + name)
