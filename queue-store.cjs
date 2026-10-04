@@ -85,10 +85,10 @@ class QueueStore {
 
   async recoverDeadOwner() {
     let stat;
-    try { stat = await this.fs.lstat(this.lock); }
+    try { stat = await this.retryFs(() => this.fs.lstat(this.lock)); }
     catch (error) { if (error.code === 'ENOENT') return; throw error; }
     if (!stat.isDirectory() || stat.isSymbolicLink()) throw this.lockedError('Unsupported active lock record.');
-    const names = await this.fs.readdir(this.lock).catch(error => { if (error.code === 'ENOENT') return []; throw error; });
+    const names = await this.retryFs(() => this.fs.readdir(this.lock)).catch(error => { if (error.code === 'ENOENT') return []; throw error; });
     if (!names.length) {
       // Acquisition publishes only nonempty directories, so removing an empty
       // directory cannot remove a writer that is still initializing metadata.
@@ -98,7 +98,10 @@ class QueueStore {
     const match = names.length === 1 && ownerPattern.exec(names[0]);
     if (!match) throw this.lockedError('Invalid active lock metadata; automatic recovery is unsafe.');
     let owner;
-    try { owner = JSON.parse(await this.fs.readFile(path.join(this.lock, names[0]), 'utf8')); }
+    // Windows may expose a listed owner file as delete-pending while its writer
+    // releases the lock. Retry this UUID-specific read; never treat denial as
+    // evidence that the PID is dead or remove an unverified replacement owner.
+    try { owner = JSON.parse(await this.retryFs(() => this.fs.readFile(path.join(this.lock, names[0]), 'utf8'))); }
     catch (error) {
       if (error.code === 'ENOENT') return;
       if (error instanceof SyntaxError) throw this.lockedError('Invalid active lock JSON; automatic recovery is unsafe.');

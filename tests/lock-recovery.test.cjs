@@ -252,6 +252,54 @@ if (process.argv[2] === '--child') {
     await assert.rejects(fs.stat(host.lock), {code: 'ENOENT'});
   });
 
+  test('transient owner inspection failures retry without removing a live lock', async t => {
+    let host,armed=false;
+    const faults={lstat:0,readdir:0,readFile:0};
+    const injected={...fs};
+    for(const method of Object.keys(faults))injected[method]=async(...args)=>{
+      if(armed&&(args[0]===host.lock||path.dirname(args[0])===host.lock)&&faults[method]++===0)
+        throw Object.assign(new Error('delete pending'),{code:'EPERM'});
+      return fs[method](...args);
+    };
+    ({host}=await fixture(t,{fs:injected,retryAttempts:2,retryDelay:()=>0}));
+    await host.read();const owner=await writeOwner(host);armed=true;
+    await host.recoverDeadOwner();
+    assert.ok(Object.values(faults).every(count=>count===2));
+    assert.equal(JSON.parse(await fs.readFile(path.join(host.lock,`owner-${owner.token}.json`),'utf8')).pid,process.pid);
+  });
+
+  test('delete-pending owner read retries to absence and permits one subsequent commit', async t => {
+    let host,ownerPath,attempts=0;
+    const injected={...fs,readFile:async(...args)=>{
+      if(args[0]===ownerPath){
+        attempts++;
+        if(attempts===1){await fs.unlink(ownerPath);await fs.rmdir(host.lock);throw Object.assign(new Error('delete pending'),{code:'EPERM'});}
+      }
+      return fs.readFile(...args);
+    }};
+    ({host}=await fixture(t,{fs:injected,retryAttempts:2,retryDelay:()=>0}));
+    const before=await host.read(),owner=await writeOwner(host);
+    ownerPath=path.join(host.lock,`owner-${owner.token}.json`);
+    const committed=await host.compareAndSet({...before,queue:{thread:[message('after-release')]}});
+    assert.equal(attempts,2);assert.equal(committed.applied,true);
+    assert.equal(committed.revision,before.revision+1);
+    assert.equal((await host.read()).queue.thread[0].id,'after-release');
+  });
+
+  test('persistent owner read denial fails closed and preserves the owner and journal', async t => {
+    let host,ownerPath;
+    const injected={...fs,readFile:async(...args)=>{
+      if(args[0]===ownerPath)throw Object.assign(new Error('owner denied'),{code:'EACCES'});
+      return fs.readFile(...args);
+    }};
+    ({host}=await fixture(t,{fs:injected,retryAttempts:2,retryDelay:()=>0}));
+    const before=await host.read(),owner=await writeOwner(host);
+    ownerPath=path.join(host.lock,`owner-${owner.token}.json`);
+    await assert.rejects(host.compareAndSet({...before,queue:{thread:[message('not-committed')]}}),{code:'EACCES'});
+    assert.deepEqual(await host.read(),before);
+    assert.equal(JSON.parse(await fs.readFile(ownerPath,'utf8')).token,owner.token);
+  });
+
   test('cleanup failure after commit reports success and retries the same owner before the next write', async t => {
     let host, denyCleanup = false;
     const warnings = [];

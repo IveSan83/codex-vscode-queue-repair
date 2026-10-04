@@ -16,10 +16,10 @@ function cloudEnvironment(){
   const handlers=new Map();let disposed=0;
   const thread={turnHistory:{kind:'canonical',history:{isComplete:false}},resumeState:'resuming',boundedCloudHistory:true};
   const client={getHostId:()=> 'cloud',getConversation:()=>thread,subscribe:({field,listener})=>{handlers.set(field,listener);return()=>{disposed++;handlers.delete(field);};}};
-  const wait=vm.runInNewContext(fn(fresh,'Y_n')+';'+fn(fresh,'X_n')+';X_n',{Pe:deferred});
+  const wait=vm.runInNewContext(fn(fresh,'Vgn')+';'+fn(fresh,'Hgn')+';Hgn',{x:deferred});
   return{handlers,thread,client,wait,getDisposed:()=>disposed};
 }
-for(const field of ['boundedCloudHistoryReady','compactHistoryComplete'])test(`OFFICIAL 31730 data: ${field} completes a waiting cloud history load`,async()=>{
+for(const field of ['boundedCloudHistoryReady','compactHistoryComplete'])test(`OFFICIAL 51102 data: ${field} completes a waiting cloud history load`,async()=>{
   const e=cloudEnvironment(),pending=deferred();
   const done=e.wait(e.client,'thread',pending.promise);
   assert.equal(e.handlers.size,2);
@@ -29,14 +29,14 @@ for(const field of ['boundedCloudHistoryReady','compactHistoryComplete'])test(`O
   assert.equal(e.getDisposed(),2);
   assert.equal(e.handlers.size,0);
 });
-test('OFFICIAL 31730 data: failed cloud load disposes both history subscriptions',async()=>{
+test('OFFICIAL 51102 data: failed cloud load disposes both history subscriptions',async()=>{
   const e=cloudEnvironment(),pending=deferred();
   const done=e.wait(e.client,'thread',pending.promise);
   pending.reject(new Error('transport unavailable'));
   await assert.rejects(done,/transport unavailable/);
   assert.equal(e.getDisposed(),2);
 });
-test('OFFICIAL 31730 data: incomplete history does not prematurely complete its waiter',async()=>{
+test('OFFICIAL 51102 data: incomplete history does not prematurely complete its waiter',async()=>{
   const e=cloudEnvironment(),pending=deferred();let completed=false;
   const done=e.wait(e.client,'thread',pending.promise).then(()=>{completed=true;});
   e.handlers.get('boundedCloudHistoryReady')();
@@ -55,27 +55,27 @@ assert.match(scanCode,/sortDirection:`desc`/);
 function scanner(response,aborted=false){
   const calls=[],controller=new AbortController();if(aborted)controller.abort();
   const o={state:{data:{plugins:[],scannedPlugins:[]}},setState:next=>{o.state=next;}};
-  const scan=vm.runInNewContext('('+scanCode+')',{i:controller.signal,n:{},Ip:{},o,jd:()=>({sendRequest:async(...args)=>{calls.push(args);return response;}}),RAt:item=>item.plugin??null});
+  const scan=vm.runInNewContext('('+scanCode+')',{i:controller.signal,n:{},Zu:{},o,zu:()=>({sendRequest:async(...args)=>{calls.push(args);return response;}}),KAt:item=>item.plugin??null});
   return{scan,calls,o};
 }
-test('OFFICIAL 31730 data: repeated non-null plugin history cursor fails instead of looping',async()=>{
+test('OFFICIAL 51102 data: repeated non-null plugin history cursor fails instead of looping',async()=>{
   const e=scanner({data:[],nextCursor:'same'});
   await assert.rejects(e.scan({threadId:'thread',cursor:'same'}),/unchanged cursor/);
   assert.equal(e.calls.length,1);
 });
-test('OFFICIAL 31730 data: final plugin history page retires its scan',async()=>{
+test('OFFICIAL 51102 data: final plugin history page retires its scan',async()=>{
   const e=scanner({data:[{item:{plugin:{id:'plugin',name:'Plugin'}}}],nextCursor:null});
   assert.deepEqual(json(await e.scan({threadId:'thread',cursor:null})),[]);
   assert.equal(e.o.state.data.plugins[0].id,'plugin');
   assert.equal(e.calls[0][1].sortDirection,'desc');
 });
-test('OFFICIAL 31730 data: one page preserves continuation and deduplicates plugin IDs',async()=>{
+test('OFFICIAL 51102 data: one page preserves continuation and deduplicates plugin IDs',async()=>{
   const plugin={id:'plugin',name:'Plugin'},e=scanner({data:[{item:{plugin}},{item:{plugin}}],nextCursor:'older'});
   assert.deepEqual(json(await e.scan({threadId:'thread',cursor:null})),[{threadId:'thread',cursor:'older'}]);
   assert.equal(e.o.state.data.plugins.length,1);
   assert.equal(e.o.state.data.scannedPlugins.length,1);
 });
-test('OFFICIAL 31730 data: aborted plugin scan sends no transport request',async()=>{
+test('OFFICIAL 51102 data: aborted plugin scan sends no transport request',async()=>{
   const e=scanner({data:[],nextCursor:null},true);
   await assert.rejects(e.scan({threadId:'thread',cursor:null}),error=>error.name==='AbortError');
   assert.equal(e.calls.length,0);

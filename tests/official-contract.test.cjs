@@ -32,7 +32,7 @@ function receive(payload){
   parser.call(state,payload);
   return{result,state};
 }
-test('OFFICIAL 31730: real lock-release handler performs release but returns undefined',async()=>{
+test('OFFICIAL 51102: real lock-release handler performs release but returns undefined',async()=>{
   const calls=[];
   const release=vm.runInNewContext('('+releaseCode+')',{queuedFollowUpSendLocks:{release:params=>calls.push(params)}});
   const args={conversationId:'thread',messageId:'message',lockId:'lock',sent:true};
@@ -42,20 +42,20 @@ test('OFFICIAL 31730: real lock-release handler performs release but returns und
   assert.equal(value,undefined);
   assert.equal(response(value).bodyJsonString,undefined);
 });
-test('OFFICIAL 31730: real response parser rejects undefined JSON after cleaning pending request',async()=>{
+test('OFFICIAL 51102: real response parser rejects undefined JSON after cleaning pending request',async()=>{
   const {result,state}=receive(response(undefined));
   await assert.rejects(result,/undefined.*not valid JSON|Unexpected token.*undefined/);
   assert.equal(state.pendingRequests.size,0);
   assert.equal(state.cleaned,1);
 });
-test('REPAIR CANDIDATE 31730: null serialization passes the same real response parser',async()=>{
+test('REPAIR CANDIDATE 51102: null serialization passes the same real response parser',async()=>{
   const payload=response(undefined,true);
   assert.equal(payload.bodyJsonString,'null');
   const {result,state}=receive(payload);
   assert.equal((await result).body,null);
   assert.equal(state.cleaned,1);
 });
-test('OFFICIAL 31730: nonempty successful response remains readable',async()=>{
+test('OFFICIAL 51102: nonempty successful response remains readable',async()=>{
   const {result}=receive(response({acquired:true}));
   assert.equal((await result).body.acquired,true);
 });

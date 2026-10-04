@@ -108,7 +108,7 @@ test('all modified shipped bundles remain syntactically valid',()=>{
 test('the injected storage adapter is executable and exposes the journal operations',async t=>{
   const {host}=await durableStorage(t);
   const adapter=expression(patched.adapter,'function '+source.profile.adapterFunction+'(').code;
-  const factory=vm.runInNewContext(`(${adapter})`,{pm:()=>{},[source.profile.adapterWriteValue??'nv']:()=>{},console,setInterval,clearInterval,setTimeout,clearTimeout,queueMicrotask});
+  const factory=vm.runInNewContext(`(${adapter})`,{[source.profile.adapterReadValue??"pm"]:()=>{},[source.profile.adapterWriteValue??'nv']:()=>{},console,setInterval,clearInterval,setTimeout,clearTimeout,queueMicrotask});
   const storage=factory({},(method,{params})=>method==='queue-repair-read'?host.read():host.compareAndSet(params));
   await storage.updateQueuedFollowUps(s=>({...s,thread:[message('injected')]}));
   assert.equal((await storage.loadQueuedFollowUps()).thread[0].id,'injected');

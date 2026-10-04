@@ -3,7 +3,7 @@ const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypt
 const acorn=require('acorn');
 const {createQueueClient}=require('./queue-client.cjs');
 const releases=require('./releases.json');
-const latestVersion='26.930.31730';
+const latestVersion='26.930.51102';
 const files=releases[latestVersion].files,hashes=releases[latestVersion].hashes;
 const sha=data=>crypto.createHash('sha256').update(data).digest('hex');
 function once(text,before,after){if(text.split(before).length!==2)throw new Error('Patch anchor is not unique: '+before.slice(0,100));return text.replace(before,()=>after)}
@@ -37,7 +37,9 @@ function patchSources(input){
  code=once(code,'if(r.submission?.status===`sending`||r.submission?.status===`outcome-unknown`)',receipt+'if(r.submission?.status===`sending`||r.submission?.status===`outcome-unknown`)');
  // A successful no-op CAS is not proof that this sender claimed pending->sending.
  // Check the final pre-mutation entry before adopting our proposed status.
- code=once(code,'if(await this.#_(e,e=>e.map(e=>(0,MQ.default)(e,n)?i:e),u,!1),r=i,', 'let queueRepairBefore=await this.#_(e,e=>e.map(e=>(0,MQ.default)(e,n)?i:e),u,!1);if(!(0,MQ.default)(queueRepairBefore.find(message=>message.id===n.id),n))throw new jQ;if(r=i,');
+ const eq=profile.claimEqual??'MQ',claimError=profile.claimError??'jQ';
+ const claimTail='if(await this.#_(e,e=>e.map(e=>(0,'+eq+'.default)(e,n)?i:e),u,!1),r=i,';
+ code=once(code,claimTail,'let queueRepairBefore=await this.#_(e,e=>e.map(e=>(0,'+eq+'.default)(e,n)?i:e),u,!1);if(!(0,'+eq+'.default)(queueRepairBefore.find(message=>message.id===n.id),n))throw new '+claimError+';if(r=i,');
  code=once(code,'let r=new Map(e.filter(e=>e.submission?.status===`outcome-unknown`&&!n.includes(e.id)).map(e=>[e.id,e]));return[...t.map(e=>r.get(e.id)??e),...[...r.values()].filter(e=>!t.some(({id:t})=>t===e.id))]','let r=new Map(e.filter(e=>!n.includes(e.id)).map(e=>[e.id,e]));return[...t.filter(e=>!n.includes(e.id)).map(e=>{let t=r.get(e.id);return t?.submission?.status===`sending`||t?.submission?.status===`outcome-unknown`?t:e}),...[...r.values()].filter(e=>!t.some(({id:t})=>t===e.id))]');
  const removeMethod=classAst(code).body.body.find(m=>m.key.name==='removeQueuedMessage');
  const removeReturn=removeMethod.value.body.body.at(-1);
@@ -85,7 +87,7 @@ function apply(directory){
  for(const[key,rel]of Object.entries(profile.files))fs.copyFileSync(path.join(directory,rel),path.join(backup,key+'.js'));
  // Keep the store basename: the protocol module requires ./queue-store.cjs.
  const helpers={'out/queue-store.cjs':'queue-store.cjs','out/codex-queue-protocol.cjs':'queue-protocol.cjs'};
- const manifest={patchVersion:'2.2',extensionVersion:profile.version,files:{},helpers:{}};
+ const manifest={patchVersion:'2.3',extensionVersion:profile.version,files:{},helpers:{}};
  try{
   for(const[rel,source]of Object.entries(helpers)){fs.copyFileSync(path.join(__dirname,source),path.join(directory,rel));manifest.helpers[rel]=sha(fs.readFileSync(path.join(directory,rel)))}
   for(const[key,rel]of Object.entries(profile.files)){fs.writeFileSync(path.join(directory,rel),output[key]);manifest.files[rel]={original:profile.hashes[key],patched:sha(Buffer.from(output[key]))}}

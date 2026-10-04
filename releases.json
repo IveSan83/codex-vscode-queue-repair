@@ -79,5 +79,55 @@
     "testHashes": {
       "response": "e3c95feeed53805e5a7fbbac95c9d51747d74c270f407c1edb9b689f756bc7f2"
     }
+  },
+  "26.930.51102": {
+    "vsixSha256": "e60c3c4f5519af19025b6e401399ff4e14057d1d4950dd39c981d2aa364b883a",
+    "downloadUrl": "https://openai.gallerycdn.vsassets.io/extensions/openai/chatgpt/26.930.51102/1791149098401/Microsoft.VisualStudio.Services.VSIXPackage",
+    "files": {
+      "host": "out/extension.js",
+      "adapter": "webview/assets/app-initial-2f14c3dc3dba.js",
+      "coordinator": "webview/assets/app-initial-6a7c0476c16a.js"
+    },
+    "hashes": {
+      "host": "1f051b97e1388816133ba9a5070832bf77ccd3e47b47fbda88f7a3d0be809e40",
+      "adapter": "643e8d45e89f6c5b10944e5ba1a79ab73e06944eeff88a474c927af09a5b2b34",
+      "coordinator": "e20b37ac8135d4f08a11787db86f1a798536537f75ca6de69821709e1d9a12e9"
+    },
+    "adapterFunction": "gen",
+    "coordinatorClass": "ykn",
+    "prepareFunction": "hkn",
+    "emptyQueue": "B$",
+    "sandboxAliases": {
+      "YJ": "zq",
+      "B$": "PQ",
+      "vkn": "TAn",
+      "R$": "MQ",
+      "_kn": "wAn",
+      "z$": "NQ",
+      "B": "z",
+      "tt": "se",
+      "x": "ft",
+      "dZ": "tX",
+      "Mt": "Lt",
+      "Qt": "le",
+      "en": "Ce",
+      "oe": "M"
+    },
+    "hostClass": "ZF",
+    "hostSandboxAliases": {
+      "namespace": "KF",
+      "isRemote": "wX",
+      "unrelatedHelper": "Soe"
+    },
+    "adapterWriteValue": "K_",
+    "testFiles": {
+      "response": "webview/assets/app-initial-e8b5abd35a8c.js"
+    },
+    "testHashes": {
+      "response": "eec8f8b4ca288791c710c232fcc856c668def0d52e4d38627d6a6278015817b3"
+    },
+    "adapterReadValue": "cm",
+    "claimEqual": "z$",
+    "claimError": "R$"
   }
 }

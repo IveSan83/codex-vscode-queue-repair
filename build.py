@@ -11,8 +11,8 @@ import os
 import zipfile
 
 ROOT = Path(__file__).resolve().parent
-VERSION = '26.930.31730'
-PATCH_VERSION = '2.2'
+VERSION = '26.930.51102'
+PATCH_VERSION = '2.3'
 OFFICIAL = ROOT / 'artifacts' / ('official-' + VERSION + '-win32-x64.vsix')
 NATIVE = 'extension/bin/windows-x86_64/codex.exe'
 NATIVE_SHA = 'fdda5fa3cf3fb3d000b876720742857676293e4315e4b045fae6f8bd7e866d1d'

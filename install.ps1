@@ -7,7 +7,7 @@ if ($LASTEXITCODE -ne 0) { throw 'Release verification gate failed' }
 $report = Get-Content -LiteralPath (Join-Path $expectedRoot 'artifacts\build-report.json') -Raw | ConvertFrom-Json
 $verification = Get-Content -LiteralPath (Join-Path $expectedRoot 'artifacts\verify-report.json') -Raw | ConvertFrom-Json
 if ($report.sourceFingerprint -ne $verification.fingerprint.digest) { throw 'Build was made from different sources' }
-if ($report.patchVersion -ne '2.2' -or $report.baseVersion -ne '26.930.31730') { throw 'Unexpected repair version' }
+if ($report.patchVersion -ne '2.3' -or $report.baseVersion -ne '26.930.51102') { throw 'Unexpected repair version' }
 $vsix = $report.patched.path
 if ((Get-FileHash -LiteralPath $vsix -Algorithm SHA256).Hash.ToLowerInvariant() -ne $report.patched.sha256) { throw 'Patched VSIX hash mismatch' }
 if (-not $report.packagedStartup.passed -or $report.packagedStartup.vsixSha256 -ne $report.patched.sha256) { throw 'Packaged startup was not verified for this VSIX' }
@@ -32,7 +32,7 @@ if ($installed.Count -ne 1) { throw 'Expected exactly one installed repaired ext
 $installedDirectory = [IO.Path]::GetFullPath((Join-Path $extensionRoot $installed[0].relativeLocation))
 if ([IO.Path]::GetDirectoryName($installedDirectory) -ne [IO.Path]::GetFullPath($extensionRoot)) { throw 'Unexpected installed extension path' }
 $pkg = Get-Content -LiteralPath (Join-Path $installedDirectory 'package.json') -Raw | ConvertFrom-Json
-if ($pkg.codexLocalQueueRepair.version -ne '2.2' -or $pkg.codexLocalQueueRepair.sourceFingerprint -ne $report.sourceFingerprint) { throw 'Installed package identity mismatch' }
+if ($pkg.codexLocalQueueRepair.version -ne '2.3' -or $pkg.codexLocalQueueRepair.sourceFingerprint -ne $report.sourceFingerprint) { throw 'Installed package identity mismatch' }
 if (-not $installed[0].metadata.pinned) { throw 'Local VSIX was not pinned; verify before activating' }
 $manifest = Get-Content -LiteralPath (Join-Path $installedDirectory 'queue-repair-manifest.json') -Raw | ConvertFrom-Json
 foreach ($file in $report.manifest.files.PSObject.Properties) {
@@ -54,7 +54,7 @@ if (Test-Path -LiteralPath $obsoleteStore) {
 }
 & node (Join-Path $expectedRoot 'tools\package-smoke.cjs') --all $installedDirectory
 if ($LASTEXITCODE -ne 0) { throw 'Installed host storage cannot start' }
-$installation = @{ version = $report.baseVersion; patchVersion = '2.2'; installedDirectory = $installedDirectory; pinned = $true; packagedStartupVerified = $true; installedStartupVerified = $true; vsixSha256 = $report.patched.sha256; queueBackup = $backup; finishedAt = [DateTime]::UtcNow.ToString('o'); activation = 'pending-full-restart' }
+$installation = @{ version = $report.baseVersion; patchVersion = '2.3'; installedDirectory = $installedDirectory; pinned = $true; packagedStartupVerified = $true; installedStartupVerified = $true; vsixSha256 = $report.patched.sha256; queueBackup = $backup; finishedAt = [DateTime]::UtcNow.ToString('o'); activation = 'pending-full-restart' }
 $installation | ConvertTo-Json -Depth 6 | Set-Content -LiteralPath (Join-Path $expectedRoot 'artifacts\install-report.json') -Encoding UTF8
 Write-Output ('Verified installation: ' + $installedDirectory)
 Write-Output 'Installed. Fully close every VS Code window and reopen to activate the repair.'
