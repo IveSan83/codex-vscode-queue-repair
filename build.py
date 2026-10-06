@@ -11,11 +11,11 @@ import os
 import zipfile
 
 ROOT = Path(__file__).resolve().parent
-VERSION = '26.930.51102'
-PATCH_VERSION = '2.3'
+VERSION = '26.930.61225'
+PATCH_VERSION = '2.4'
 OFFICIAL = ROOT / 'artifacts' / ('official-' + VERSION + '-win32-x64.vsix')
 NATIVE = 'extension/bin/windows-x86_64/codex.exe'
-NATIVE_SHA = 'fdda5fa3cf3fb3d000b876720742857676293e4315e4b045fae6f8bd7e866d1d'
+NATIVE_SHA = '9e7c59c05cc1ce5677b1f94e835b2ac038ca3be14504e78d558eacdb0ea3f55d'
 
 def sha_file(file):
     with file.open('rb') as stream:
@@ -192,7 +192,7 @@ def build(archive, profile):
         'sourceFingerprint': verification['fingerprint']['digest'],
         'official': metadata(Path(archive.filename)), 'patched': metadata(destination),
         'rollback': {'officialVersion': '26.917.62051', 'journalRetained': True},
-        'native': {'version': '0.160.0', 'path': NATIVE, 'sha256': NATIVE_SHA},
+        'native': {'version': '0.160.1', 'path': NATIVE, 'sha256': NATIVE_SHA},
         'manifest': manifest, 'verificationReport': str(artifacts / 'verify-report.json'),
         'packagedStartup': packaged_startup,
         'archiveAudit': archive_audit,

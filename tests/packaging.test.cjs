@@ -5,7 +5,8 @@ const fs = require('node:fs/promises');
 const os = require('node:os');
 const path = require('node:path');
 const {spawnSync} = require('node:child_process');
-const {apply, files} = require('../patch.cjs');
+const {apply} = require('../patch.cjs');
+const releases = require('../releases.json');
 
 async function fixture(t) {
   const temporaryRoot = await fs.realpath(os.tmpdir());
@@ -17,6 +18,8 @@ async function fixture(t) {
     await fs.rm(resolved, {recursive: true, force: true, maxRetries: 3, retryDelay: 30});
   });
   const original = process.env.CODEX_QUEUE_TEST_EXTENSION || path.resolve(__dirname, '../artifacts/base/extension');
+  const {version} = JSON.parse(await fs.readFile(path.join(original, 'package.json'), 'utf8'));
+  const {files} = releases[version];
   for (const relative of ['package.json', ...Object.values(files)]) {
     await fs.mkdir(path.dirname(path.join(directory, relative)), {recursive: true});
     await fs.copyFile(path.join(original, relative), path.join(directory, relative));

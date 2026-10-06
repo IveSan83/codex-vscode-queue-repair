@@ -8,7 +8,7 @@ import zipfile
 
 ROOT = Path(__file__).resolve().parent.parent
 ARTIFACTS = ROOT / 'artifacts'
-VERSION = '2.3.0'
+VERSION = '2.4.0'
 
 
 def sha(data):
@@ -21,7 +21,7 @@ def main():
     build = json.loads((ARTIFACTS / 'build-report.json').read_text())
     if build['sourceFingerprint'] != verification['fingerprint']['digest']:
         raise RuntimeError('Build/source verification mismatch')
-    if build['baseVersion'] != '26.930.51102' or build['patchVersion'] != '2.3':
+    if build['baseVersion'] != '26.930.61225' or build['patchVersion'] != '2.4':
         raise RuntimeError('Wrong release identity')
     if not build['packagedStartup']['passed']:
         raise RuntimeError('Finished VSIX startup did not pass')
@@ -69,7 +69,7 @@ def main():
 
     evidence = {'verification-report.json': clean(verification), 'build-report.json': clean(build),
                 'source-sha256.json': source_manifest}
-    for name in ['archive-static-audit.json', 'archive-metadata-audit.json', 'critical-component-comparison.json', 'pre-fix-stress-failures.json']:
+    for name in ['archive-static-audit.json', 'archive-metadata-audit.json', 'critical-component-comparison.json', 'pre-fix-stress-failures.json', 'protocol-results.json']:
         file = ARTIFACTS / name
         if file.exists():
             evidence[name] = clean(json.loads(file.read_text()))
@@ -87,9 +87,9 @@ def main():
             data = clean(original.decode('utf-8')).encode('utf-8')
             inspect(name, data)
             archive.writestr(name, data)
-        data = (ROOT / 'reports/release-51102.md').read_bytes()
-        inspect('release-51102.md', data)
-        archive.writestr('release-51102.md', data)
+        data = (ROOT / 'reports/release-61225.md').read_bytes()
+        inspect('release-61225.md', data)
+        archive.writestr('release-61225.md', data)
     checksums = output / ('SHA256SUMS-' + VERSION + '.txt')
     checksums.write_text(''.join(sha(file.read_bytes()) + '  ' + file.name + '\n'
                                  for file in [kit, result_zip]), encoding='utf-8')

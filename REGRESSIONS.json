@@ -224,51 +224,51 @@
     },
     {
       "file": "tests/new-data-paths.test.cjs",
-      "name": "OFFICIAL 51102 data: aborted plugin scan sends no transport request"
+      "name": "OFFICIAL 61225 data: aborted plugin scan sends no transport request"
     },
     {
       "file": "tests/new-data-paths.test.cjs",
-      "name": "OFFICIAL 51102 data: boundedCloudHistoryReady completes a waiting cloud history load"
+      "name": "OFFICIAL 61225 data: boundedCloudHistoryReady completes a waiting cloud history load"
     },
     {
       "file": "tests/new-data-paths.test.cjs",
-      "name": "OFFICIAL 51102 data: compactHistoryComplete completes a waiting cloud history load"
+      "name": "OFFICIAL 61225 data: compactHistoryComplete completes a waiting cloud history load"
     },
     {
       "file": "tests/new-data-paths.test.cjs",
-      "name": "OFFICIAL 51102 data: failed cloud load disposes both history subscriptions"
+      "name": "OFFICIAL 61225 data: failed cloud load disposes both history subscriptions"
     },
     {
       "file": "tests/new-data-paths.test.cjs",
-      "name": "OFFICIAL 51102 data: final plugin history page retires its scan"
+      "name": "OFFICIAL 61225 data: final plugin history page retires its scan"
     },
     {
       "file": "tests/new-data-paths.test.cjs",
-      "name": "OFFICIAL 51102 data: incomplete history does not prematurely complete its waiter"
+      "name": "OFFICIAL 61225 data: incomplete history does not prematurely complete its waiter"
     },
     {
       "file": "tests/new-data-paths.test.cjs",
-      "name": "OFFICIAL 51102 data: one page preserves continuation and deduplicates plugin IDs"
+      "name": "OFFICIAL 61225 data: one page preserves continuation and deduplicates plugin IDs"
     },
     {
       "file": "tests/new-data-paths.test.cjs",
-      "name": "OFFICIAL 51102 data: repeated non-null plugin history cursor fails instead of looping"
+      "name": "OFFICIAL 61225 data: repeated non-null plugin history cursor fails instead of looping"
     },
     {
       "file": "tests/official-contract.test.cjs",
-      "name": "OFFICIAL 51102: nonempty successful response remains readable"
+      "name": "OFFICIAL 61225: nonempty successful response remains readable"
     },
     {
       "file": "tests/official-contract.test.cjs",
-      "name": "OFFICIAL 51102: real lock-release handler performs release but returns undefined"
+      "name": "OFFICIAL 61225: real lock-release handler performs release but returns undefined"
     },
     {
       "file": "tests/official-contract.test.cjs",
-      "name": "OFFICIAL 51102: real response parser rejects undefined JSON after cleaning pending request"
+      "name": "OFFICIAL 61225: real response parser rejects undefined JSON after cleaning pending request"
     },
     {
       "file": "tests/official-contract.test.cjs",
-      "name": "REPAIR CANDIDATE 51102: null serialization passes the same real response parser"
+      "name": "REPAIR CANDIDATE 61225: null serialization passes the same real response parser"
     },
     {
       "file": "tests/packaging.test.cjs",
@@ -360,15 +360,15 @@
     },
     {
       "file": "tests/server-queue-compat.test.cjs",
-      "name": "51102 compatibility: patched coordinator retires a server receipt only after durable server removal"
+      "name": "61225 compatibility: patched coordinator retires a server receipt only after durable server removal"
     },
     {
       "file": "tests/server-queue-compat.test.cjs",
-      "name": "51102 compatibility: follower cannot remove the owner server queue receipt"
+      "name": "61225 compatibility: follower cannot remove the owner server queue receipt"
     },
     {
       "file": "tests/server-queue-compat.test.cjs",
-      "name": "51102 compatibility: replacing the app-server queue detaches and disposes its previous subscription"
+      "name": "61225 compatibility: replacing the app-server queue detaches and disposes its previous subscription"
     },
     {
       "file": "tests/lock-recovery.test.cjs",
@@ -524,33 +524,33 @@
       "id": "official-response-contract",
       "assertion": "The original shipped release handler returns undefined after release and the actual response parser rejects its missing JSON. Null normalization and nonempty responses remain readable.",
       "tests": [
-        "OFFICIAL 51102: nonempty successful response remains readable",
-        "OFFICIAL 51102: real lock-release handler performs release but returns undefined",
-        "OFFICIAL 51102: real response parser rejects undefined JSON after cleaning pending request",
-        "REPAIR CANDIDATE 51102: null serialization passes the same real response parser"
+        "OFFICIAL 61225: nonempty successful response remains readable",
+        "OFFICIAL 61225: real lock-release handler performs release but returns undefined",
+        "OFFICIAL 61225: real response parser rejects undefined JSON after cleaning pending request",
+        "REPAIR CANDIDATE 61225: null serialization passes the same real response parser"
       ]
     },
     {
       "id": "upstream-data-loading",
       "assertion": "The shipped cloud-history waiter handles both completion events, keeps incomplete history waiting and disposes subscriptions. Plugin scanning rejects repeated cursors, preserves continuation, deduplicates IDs and stops before transport on abort.",
       "tests": [
-        "OFFICIAL 51102 data: aborted plugin scan sends no transport request",
-        "OFFICIAL 51102 data: boundedCloudHistoryReady completes a waiting cloud history load",
-        "OFFICIAL 51102 data: compactHistoryComplete completes a waiting cloud history load",
-        "OFFICIAL 51102 data: failed cloud load disposes both history subscriptions",
-        "OFFICIAL 51102 data: final plugin history page retires its scan",
-        "OFFICIAL 51102 data: incomplete history does not prematurely complete its waiter",
-        "OFFICIAL 51102 data: one page preserves continuation and deduplicates plugin IDs",
-        "OFFICIAL 51102 data: repeated non-null plugin history cursor fails instead of looping"
+        "OFFICIAL 61225 data: aborted plugin scan sends no transport request",
+        "OFFICIAL 61225 data: boundedCloudHistoryReady completes a waiting cloud history load",
+        "OFFICIAL 61225 data: compactHistoryComplete completes a waiting cloud history load",
+        "OFFICIAL 61225 data: failed cloud load disposes both history subscriptions",
+        "OFFICIAL 61225 data: final plugin history page retires its scan",
+        "OFFICIAL 61225 data: incomplete history does not prematurely complete its waiter",
+        "OFFICIAL 61225 data: one page preserves continuation and deduplicates plugin IDs",
+        "OFFICIAL 61225 data: repeated non-null plugin history cursor fails instead of looping"
       ]
     },
     {
       "id": "new-server-queue-compatibility",
-      "assertion": "Patched 51102 preserves upstream server receipt removal, ownership boundaries and subscription replacement cleanup.",
+      "assertion": "Patched 61225 preserves upstream server receipt removal, ownership boundaries and subscription replacement cleanup.",
       "tests": [
-        "51102 compatibility: patched coordinator retires a server receipt only after durable server removal",
-        "51102 compatibility: follower cannot remove the owner server queue receipt",
-        "51102 compatibility: replacing the app-server queue detaches and disposes its previous subscription"
+        "61225 compatibility: patched coordinator retires a server receipt only after durable server removal",
+        "61225 compatibility: follower cannot remove the owner server queue receipt",
+        "61225 compatibility: replacing the app-server queue detaches and disposes its previous subscription"
       ]
     },
     {

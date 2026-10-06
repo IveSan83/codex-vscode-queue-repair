@@ -1,7 +1,7 @@
 # Codex VS Code queue repair
 
 An independent repair for disappearing, restored and stalled follow-up messages
-in **openai.chatgpt 26.930.51102 on Windows x64**.
+in **openai.chatgpt 26.930.61225 on Windows x64**.
 
 **Repair author: IveSan83 (Eugene Bondarenko)**
 
@@ -22,14 +22,14 @@ in PATH, Node.js 22 or newer with npm, Python 3.11 or newer, internet access and
 approximately 3 GB of free disk space. Git is optional. A custom VS Code location
 can be specified through `CODEX_QUEUE_VERIFY_CODE_EXE`.
 
-1. Download `codex-vscode-queue-repair-2.3.0.zip` from the release page and extract
+1. Download `codex-vscode-queue-repair-2.4.0.zip` from the release page and extract
    it into a new folder.
 2. Close all VS Code windows so that old extension hosts stop.
 3. Double-click **START.cmd**. It downloads the official extension, checks it,
    runs the registered tests in Node and VS Code's Electron runtime, builds and
    checks the finished VSIX, and installs it. The Electron checks run as Node
    processes without opening the editor.
-4. Open VS Code. The extension appears as **Codex (local queue repair 2.3)**.
+4. Open VS Code. The extension appears as **Codex (local queue repair 2.4)**.
    Check normal messages, follow-ups, Stop, Steer and two-window use.
 
 For a terminal installation from the extracted folder:
@@ -77,7 +77,7 @@ reuse. Read `artifacts/setup.log` if installation reports an error.
   separate `"undefined" is not valid JSON` error.
 
 Queue, Steer and Interrupt remain available. The official native
-**codex-cli 0.160.0** executable and all unrelated archive entries are preserved
+**codex-cli 0.160.1** executable and all unrelated archive entries are preserved
 and verified by SHA-256. No increase in model generation speed is claimed.
 
 The persistence repair addresses a different failure than only normalizing the
@@ -142,7 +142,7 @@ journal; returning to this repair preserves it.
 
 ## Scope and limitations
 
-Only **26.930.51102 win32-x64** is supported by this package. Different official
+Only **26.930.61225 win32-x64** is supported by this package. Different official
 archive or bundle hashes are rejected until a release profile and patch anchors
 are reviewed. User reports also describe the regression in 26.928.31416,
 26.928.40906, 26.930.21537 and 26.930.31428; this download does not patch those packages.
@@ -153,9 +153,9 @@ server failures, or replace a live UI check. An unresolved delivery is preserved
 for review. Retired IDs are retained and the journal grows over time. A hung
 host RPC can require reloading the window.
 
-The new comparison is in `reports/release-51102.md`; the previous comparison
-is retained in `reports/release-diff.md`. The 51102 package retains the affected
-queue components and the same native runtime. Repair 2.3 ports the hash-pinned
+The new comparison is in `reports/release-61225.md`; the previous comparison
+is retained in `reports/release-diff.md`. The 61225 package retains the affected
+queue components; its native runtime updates to CLI 0.160.1. Repair 2.4 ports the hash-pinned
 repair to this package and requires 94 tests in each runtime (188 executions).
 Download the sanitized test-results ZIP from the release for TAP logs, the
 verification summary, package audit and source hashes.

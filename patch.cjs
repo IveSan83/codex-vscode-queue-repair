@@ -3,7 +3,7 @@ const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypt
 const acorn=require('acorn');
 const {createQueueClient}=require('./queue-client.cjs');
 const releases=require('./releases.json');
-const latestVersion='26.930.51102';
+const latestVersion='26.930.61225';
 const files=releases[latestVersion].files,hashes=releases[latestVersion].hashes;
 const sha=data=>crypto.createHash('sha256').update(data).digest('hex');
 function once(text,before,after){if(text.split(before).length!==2)throw new Error('Patch anchor is not unique: '+before.slice(0,100));return text.replace(before,()=>after)}
@@ -87,7 +87,7 @@ function apply(directory){
  for(const[key,rel]of Object.entries(profile.files))fs.copyFileSync(path.join(directory,rel),path.join(backup,key+'.js'));
  // Keep the store basename: the protocol module requires ./queue-store.cjs.
  const helpers={'out/queue-store.cjs':'queue-store.cjs','out/codex-queue-protocol.cjs':'queue-protocol.cjs'};
- const manifest={patchVersion:'2.3',extensionVersion:profile.version,files:{},helpers:{}};
+ const manifest={patchVersion:'2.4',extensionVersion:profile.version,files:{},helpers:{}};
  try{
   for(const[rel,source]of Object.entries(helpers)){fs.copyFileSync(path.join(__dirname,source),path.join(directory,rel));manifest.helpers[rel]=sha(fs.readFileSync(path.join(directory,rel)))}
   for(const[key,rel]of Object.entries(profile.files)){fs.writeFileSync(path.join(directory,rel),output[key]);manifest.files[rel]={original:profile.hashes[key],patched:sha(Buffer.from(output[key]))}}

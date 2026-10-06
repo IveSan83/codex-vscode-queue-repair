@@ -15,7 +15,7 @@ function serverQueue(initial=[]){
   changed(next){entries=next;listener?.('thread')}
  };
 }
-test('51102 compatibility: patched coordinator retires a server receipt only after durable server removal',async t=>{
+test('61225 compatibility: patched coordinator retires a server receipt only after durable server removal',async t=>{
  const e=engine(true,memoryStorage(),{ready:false});t.after(e.instance.dispose);
  const q=serverQueue([{id:'server-a',clientUserMessageId:'a'}]),events=[];
  let receipts=[{serverQueuedMessageId:'server-a',clientUserMessageId:'a'}];
@@ -26,13 +26,13 @@ test('51102 compatibility: patched coordinator retires a server receipt only aft
  await until(()=>events.length===1);
  assert.deepEqual(q.read(),[]);assert.deepEqual(events,['a']);assert.equal(e.calls.length,0);
 });
-test('51102 compatibility: follower cannot remove the owner server queue receipt',async t=>{
+test('61225 compatibility: follower cannot remove the owner server queue receipt',async t=>{
  const e=engine(true,memoryStorage(),{ready:false,initialRole:'follower'});t.after(e.instance.dispose);
  const q=serverQueue([{id:'server-a',clientUserMessageId:'a'}]);e.instance.setServerQueue(q);
  e.instance.reconcileServerQueueReceipts('thread',[{serverQueuedMessageId:'server-a',clientUserMessageId:'a'}]);
  await Promise.resolve();assert.equal(q.read().length,1);assert.equal(e.instance.reconcilingServerQueues.size,0);
 });
-test('51102 compatibility: replacing the app-server queue detaches and disposes its previous subscription',async t=>{
+test('61225 compatibility: replacing the app-server queue detaches and disposes its previous subscription',async t=>{
  const e=engine(true,memoryStorage(),{ready:false});t.after(e.instance.dispose);
  const first=serverQueue(),second=serverQueue(),events=[];
  e.instance.options.onQueueChanged=id=>events.push(id);
